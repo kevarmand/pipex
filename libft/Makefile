@@ -71,7 +71,7 @@ FLAGS	= -Wall -Wextra -Werror -I. -Ignl
 $(NAME) : $(OBJS) $(OBJS_PRINT)
 	ar -rcs $@ $^
 
-bonus	: $(OBJS) $(OBONUS)
+bonus	: $(NAME) $(OBJS) $(OBONUS)
 	ar -rcs $(NAME) $^
 
 so:

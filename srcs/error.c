@@ -1,28 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kearmand <kearmand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/11 10:39:00 by kearmand          #+#    #+#             */
-/*   Updated: 2025/02/15 10:59:09 by kearmand         ###   ########.fr       */
+/*   Created: 2025/02/15 10:50:02 by kearmand          #+#    #+#             */
+/*   Updated: 2025/02/15 10:59:35 by kearmand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/pipex.h"
+#include "pipex.h"
 
-
-int main(int ac, char **av, char **env)
+int	error_access_file(t_data *data, char *str)
 {
-	t_data	data;
+	ft_putstr_fd(data->name, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd(": ", 2);
+	perror(data->infile);
+	return (1);
+}
 
-	init_memory(&data);
-	if (parse(av, ac, &data, env))
-		return (0);
-	if (init_pipe(&data))
-		return (free_memory(&data), 0);
-	dispatch_cmd(&data, env);
-	free_memory(&data);
-	return (0);
+int	error_dup2(t_data *data)
+{
+	ft_putstr_fd(data->name, 2);
+	ft_putstr_fd(": ", 2);
+	perror("dup2");
+	return (1);
 }

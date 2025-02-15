@@ -14,6 +14,7 @@ SRC			= parser.c\
 			  dup.c\
 			  dispatch.c\
 			  exec_cmd.c\
+			  error.c\
 
 NAME		= pipex
 
@@ -35,7 +36,7 @@ $(NAME): $(OBJ) $(LIBFT)
 
 $(LIBFT):
 	echo "Making libft"
-	@make -C libft
+	@make -C libft bonus
 
 clean:
 	rm -rf $(OBJ_DIR)

@@ -6,7 +6,7 @@
 /*   By: kearmand <kearmand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 11:54:06 by kearmand          #+#    #+#             */
-/*   Updated: 2025/02/14 13:17:00 by kearmand         ###   ########.fr       */
+/*   Updated: 2025/02/15 12:45:39 by kearmand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,15 @@ int	parse_path(t_data *data, char **env)
 		data->path[i] = tmp;
 		i++;
 	}
+	//afficher les commande
+	for (int j = 0; data->cmd_nb > j; j++)
+	{
+		ft_printf("cmd[%d]: %s\n", j, data->cmd[j]);
+	}
+	printf("here_doc: %d\n", data->here_doc);
+	printf("infile: %s\n", data->infile);
 	return (0);
 }
-
 
 int	parsinette(char **av, int ac, t_data *data, char **env)
 {
@@ -70,6 +76,15 @@ int	parsinette(char **av, int ac, t_data *data, char **env)
 	return (parse_path(data, env));
 }
 
+char	*normalise_name(char *av)
+{
+	char *tmp;
+	
+	tmp = ft_strrchr(av, '/');
+	if (tmp == NULL)
+		return (av);
+	return (tmp + 1);
+}
 
 int	parse(char **av, int ac, t_data *data, char **env)
 {
@@ -78,9 +93,9 @@ int	parse(char **av, int ac, t_data *data, char **env)
 		ft_printf("Error: Not enough arguments\n");
 		return (1);
 	}
+	data->name = normalise_name(av[0]);
 	if (ft_strncmp(av[1], "here_doc", 9) == 0)
 	{
-		printf("here_doc\n");
 		if (ac < 6)
 		{
 			ft_printf("Error: Not enough arguments\n");
