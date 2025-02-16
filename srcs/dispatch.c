@@ -6,7 +6,7 @@
 /*   By: kearmand <kearmand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:15:33 by kearmand          #+#    #+#             */
-/*   Updated: 2025/02/14 15:33:05 by kearmand         ###   ########.fr       */
+/*   Updated: 2025/02/16 17:10:57 by kearmand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ void	dispatch_cmd(t_data *data, char **env)
 		}
 		if (pid == 0)
 			exec_child_cmd(data, i, env);
+		else
+			printf("Child %d created : pid = %d\n", i, pid);
 		i++;
 	}
 	close_pipe(data);
@@ -48,7 +50,9 @@ static void	wait_child(int nb_child)
 	i = 0;
 	while (i < nb_child)
 	{
-		wait(&status);
+		//utiliser waitpid pour attendre un enfant en particulier et afficher le status
+		int pid = waitpid(-1, &status, 0);
+		printf("Child %d terminated\n", pid);
 		i++;
 	}
 }

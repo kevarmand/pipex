@@ -6,7 +6,7 @@
 /*   By: kearmand <kearmand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 12:58:14 by kearmand          #+#    #+#             */
-/*   Updated: 2025/02/15 12:49:36 by kearmand         ###   ########.fr       */
+/*   Updated: 2025/02/16 16:28:22 by kearmand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,49 +59,7 @@ int	redirect_outfile(t_data *data)
 	close(fd);
 	return (0);
 }
-int	ft_here_doc_infile(t_data *data)
-{
-	char	*line;
-	char	*limiter;
-	t_list	*lst;
-	t_list	*tmp;
-	//creer une liste chainee pour stocker les here doc
-	// utiliser GNL pour lire les here doc
-	
-	lst = NULL;
-	limiter = data->infile;
-	while (1)
-	{
-		line = get_next_line(0);
-		if (line == NULL)
-			break ;
-		if (ft_strncmp(line, limiter, ft_strlen(limiter)) == 0)
-		{
-			free(line);
-			break ;
-		}
-		tmp = ft_lstnew(line);
-		if (tmp == NULL)
-		{
-			ft_lstclear(&lst, free);
-			return (error_access_file(data, "malloc"));
-		}
-		ft_lstadd_back(&lst, tmp);
-	}
-	close(1);
-	while (lst)
-	{
-		line = lst->content;
-		write(0, line, ft_strlen(line));
-		tmp = lst;
-		lst = lst->next;
-		free(tmp->content);
-		free(tmp);
-	}
-	
-	close(0);
-	return (0);
-}
+
 
 int	redirect_infile(t_data *data)
 {

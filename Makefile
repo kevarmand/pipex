@@ -15,10 +15,19 @@ SRC			= parser.c\
 			  dispatch.c\
 			  exec_cmd.c\
 			  error.c\
+			  infile_bonus.c\
 
 NAME		= pipex
 
 OBJ			= $(SRC:%.c=$(OBJ_DIR)/%.o)
+#2 solutions to get the path of the .o files
+#OBJ = $(addprefix $(OBJ_DIR)/, $(notdir $(SRC:%.c=%.o)))
+#ou
+
+#OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
+# avec $(OBJ_DIR)/%: $(SRC_DIR)/%
+#	mkdir -p $(dir $@)   # Crée le répertoire nécessaire
+#	$(CC) $(CFLAGS) -c $< -o $@
 
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
