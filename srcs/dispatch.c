@@ -6,13 +6,13 @@
 /*   By: kearmand <kearmand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 14:15:33 by kearmand          #+#    #+#             */
-/*   Updated: 2025/02/16 17:10:57 by kearmand         ###   ########.fr       */
+/*   Updated: 2025/02/18 15:02:16 by kearmand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static void	wait_child(int nb_child);
+static void	wait_child(int nb_child, int pid, t_data *data);
 
 /****
  * Create a child process for each command
@@ -34,25 +34,24 @@ void	dispatch_cmd(t_data *data, char **env)
 		}
 		if (pid == 0)
 			exec_child_cmd(data, i, env);
-		else
-			printf("Child %d created : pid = %d\n", i, pid);
 		i++;
 	}
 	close_pipe(data);
-	wait_child(i);
+	wait_child(i, pid, data);
 }
 
-static void	wait_child(int nb_child)
+static void	wait_child(int nb_child, int pid_save, t_data *data)
 {
 	int	i;
 	int	status;
+	int	pid;
 
 	i = 0;
 	while (i < nb_child)
 	{
-		//utiliser waitpid pour attendre un enfant en particulier et afficher le status
-		int pid = waitpid(-1, &status, 0);
-		printf("Child %d terminated\n", pid);
+		pid = waitpid(-1, &status, 0);
 		i++;
+		if (pid == pid_save)
+			data->return_value = WEXITSTATUS(status);
 	}
 }

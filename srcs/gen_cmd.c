@@ -6,12 +6,11 @@
 /*   By: kearmand <kearmand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 15:39:44 by kearmand          #+#    #+#             */
-/*   Updated: 2025/02/14 17:59:07 by kearmand         ###   ########.fr       */
+/*   Updated: 2025/02/18 10:29:24 by kearmand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
 
 /*****
  * Generate a command with the path
@@ -20,8 +19,8 @@
  */
 char	*gen_cmd(t_data *data, char *cmd)
 {
-	int i;
-	char *tmp;
+	int		i;
+	char	*tmp;
 
 	i = 0;
 	if (ft_strchr(cmd, '/'))
@@ -34,9 +33,9 @@ char	*gen_cmd(t_data *data, char *cmd)
 			ft_putstr_fd("Error: Malloc failed\n", 2);
 			return (NULL);
 		}
-		if (access(tmp, F_OK) == 0 && access(tmp, X_OK) == 0) 
+		if (access(tmp, F_OK) == 0 && access(tmp, X_OK) == 0)
 			return (tmp);
-		free(tmp);
+		free (tmp);
 		i++;
 	}
 	return (NULL);

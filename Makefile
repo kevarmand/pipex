@@ -15,7 +15,7 @@ SRC			= parser.c\
 			  dispatch.c\
 			  exec_cmd.c\
 			  error.c\
-			  infile_bonus.c\
+			  heredoc_bonus.c\
 
 NAME		= pipex
 

@@ -6,17 +6,41 @@
 /*   By: kearmand <kearmand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 11:54:06 by kearmand          #+#    #+#             */
-/*   Updated: 2025/02/15 12:45:39 by kearmand         ###   ########.fr       */
+/*   Updated: 2025/02/18 14:20:50 by kearmand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/pipex.h"
 
+/****
+ * Add / at the end of the path
+ */
+int	parse_pathinette(t_data *data)
+{
+	int		i;
+	char	*tmp;
+
+	i = 0;
+	while (data->path[i])
+	{
+		tmp = ft_strjoin(data->path[i], "/");
+		if (tmp == NULL)
+		{
+			ft_printf("Error: Malloc failed\n");
+			return (-1);
+		}
+		free(data->path[i]);
+		data->path[i] = tmp;
+		i++;
+	}
+	return (0);
+}
+
+/****
+ * Parse the PATH
+ */
 int	parse_path(t_data *data, char **env)
 {
-	int i;
-	char *tmp;
-	
 	while (ft_strncmp(*env, "PATH=", 5) != 0)
 		env++;
 	if (*env == NULL)
@@ -31,33 +55,16 @@ int	parse_path(t_data *data, char **env)
 		ft_printf("Error: Malloc failed\n");
 		return (-1);
 	}
-	i = 0;
-	while(data->path[i])
-	{
-		tmp = ft_strjoin(data->path[i], "/");
-		if (tmp == NULL)
-		{
-			ft_printf("Error: Malloc failed\n");
-			return (-1);
-		}
-		free(data->path[i]);
-		data->path[i] = tmp;
-		i++;
-	}
-	//afficher les commande
-	for (int j = 0; data->cmd_nb > j; j++)
-	{
-		ft_printf("cmd[%d]: %s\n", j, data->cmd[j]);
-	}
-	printf("here_doc: %d\n", data->here_doc);
-	printf("infile: %s\n", data->infile);
-	return (0);
+	return (parse_pathinette(data));
 }
 
+/****
+ * Parse the command line
+ */
 int	parsinette(char **av, int ac, t_data *data, char **env)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
 	data->infile = av[1];
 	data->outfile = av[ac - 1];
@@ -73,19 +80,27 @@ int	parsinette(char **av, int ac, t_data *data, char **env)
 		i++;
 	}
 	data->cmd_nb = i;
+	if (data->here_doc == 1)
+		here_doc_infile (data);
 	return (parse_path(data, env));
 }
 
+/***
+ * Store the name of the command in data
+ */
 char	*normalise_name(char *av)
 {
-	char *tmp;
-	
+	char	*tmp;
+
 	tmp = ft_strrchr(av, '/');
 	if (tmp == NULL)
 		return (av);
 	return (tmp + 1);
 }
 
+/****
+ * Init the parsing
+ */
 int	parse(char **av, int ac, t_data *data, char **env)
 {
 	if (ac < 5)

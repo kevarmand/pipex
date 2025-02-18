@@ -6,7 +6,7 @@
 /*   By: kearmand <kearmand@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 10:40:19 by kearmand          #+#    #+#             */
-/*   Updated: 2025/02/15 11:36:54 by kearmand         ###   ########.fr       */
+/*   Updated: 2025/02/18 15:01:46 by kearmand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <fcntl.h>
 # include <errno.h>
 # include "libft.h"
-#include <sys/wait.h>
+# include <sys/wait.h>
 
 typedef struct s_data
 {
@@ -33,9 +33,8 @@ typedef struct s_data
 	int		**pipe;
 	int		here_doc;
 	char	*name;
-	
+	int		return_value;
 }	t_data;
-
 
 int		parse(char **av, int ac, t_data *data, char **env);
 char	*gen_cmd(t_data *data, char *cmd);
@@ -51,11 +50,14 @@ int		init_pipe(t_data *data);
 
 void	close_pipe(t_data *data);
 int		redirect_pipe(t_data *data, int i);
+int		here_doc_infile(t_data *data);
+int		here_doc_outfile(t_data *data);
 
 void	dispatch_cmd(t_data *data, char **env);
-void 	exec_child_cmd(t_data *data, int i, char **env);
+void	exec_child_cmd(t_data *data, int i, char **env);
 
 int		error_access_file(t_data *data, char *str);
-int		error_dup2(t_data *data);
+int		exit_no_cmd(char *tmp, t_data *data, char **cmd, int i);
+int		error_open(t_data *data, char *str);
 
 #endif
