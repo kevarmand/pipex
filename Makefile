@@ -1,5 +1,5 @@
 CC	= cc
-CFLAGS = -Wall -Wextra -Iinc -g3
+CFLAGS = -Wall -Wextra -Werror -Iinc
 
 SRC_DIR		= srcs
 OBJ_DIR 	= obj
@@ -46,6 +46,8 @@ $(NAME): $(OBJ) $(LIBFT)
 $(LIBFT):
 	echo "Making libft"
 	@make -C libft bonus
+
+bonus: all
 
 clean:
 	rm -rf $(OBJ_DIR)
